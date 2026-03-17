@@ -1,0 +1,15 @@
+2024-09-12T14:15:03Z [deploy] Starting deploy of auth-service v2.41.0 to us-east-1
+2024-09-12T14:15:03Z [deploy] Commit: a]b3f291 "Migrate session store from Redis 6 to Redis 7 cluster"
+2024-09-12T14:15:04Z [deploy] Author: jchen@internal
+2024-09-12T14:15:10Z [deploy] Image: auth-service:v2.41.0-sha-ab3f291
+2024-09-12T14:15:12Z [deploy] Deploying to canary (5% traffic)
+2024-09-12T14:18:30Z [deploy] Canary health check passed. Promoting to 25%
+2024-09-12T14:22:45Z [deploy] Promoting to 50%
+2024-09-12T14:25:01Z [deploy] Promoting to 100%
+2024-09-12T14:25:02Z [deploy] Deploy complete. auth-service v2.41.0 fully rolled out in us-east-1
+2024-09-12T14:28:15Z [deploy] Post-deploy validation started
+2024-09-12T14:29:00Z [deploy] WARNING: Connection pool saturation detected on redis-cluster-east-07
+2024-09-12T14:31:50Z [deploy] ERROR: Health check failures on 3/8 auth-service pods
+2024-09-12T15:42:00Z [deploy] Rollback initiated: auth-service v2.41.0 -> v2.40.3
+2024-09-12T15:44:30Z [deploy] Rollback to v2.40.3 complete
+2024-09-12T15:45:00Z [deploy] Post-rollback health check: all pods healthy

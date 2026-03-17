@@ -1,0 +1,42 @@
+[
+  {
+    "alert_id": "ALT-90421",
+    "timestamp": "2024-09-12T14:32:00Z",
+    "severity": "critical",
+    "source": "datadog",
+    "title": "API latency p99 > 5s on auth-service",
+    "description": "auth-service p99 latency exceeded 5000ms threshold for 3 consecutive checks. Affected region: us-east-1. Current value: 8200ms.",
+    "status": "triggered",
+    "team": "platform-infra"
+  },
+  {
+    "alert_id": "ALT-90422",
+    "timestamp": "2024-09-12T14:35:00Z",
+    "severity": "critical",
+    "source": "datadog",
+    "title": "Error rate spike on login endpoint",
+    "description": "POST /api/v2/auth/login returning 5xx at 34% error rate. Baseline is <0.5%. Started ~14:30 UTC.",
+    "status": "triggered",
+    "team": "platform-infra"
+  },
+  {
+    "alert_id": "ALT-90425",
+    "timestamp": "2024-09-12T15:10:00Z",
+    "severity": "warning",
+    "source": "pagerduty",
+    "title": "Customer SSO callback failures elevated",
+    "description": "SSO callback endpoint returning 502 for enterprise customers using SAML. 12 unique orgs affected in last 15 minutes.",
+    "status": "triggered",
+    "team": "identity"
+  },
+  {
+    "alert_id": "ALT-90430",
+    "timestamp": "2024-09-12T16:45:00Z",
+    "severity": "info",
+    "source": "datadog",
+    "title": "auth-service latency recovering",
+    "description": "auth-service p99 latency now at 1200ms, trending down. Error rate at 2.1%.",
+    "status": "resolved",
+    "team": "platform-infra"
+  }
+]

@@ -1,0 +1,19 @@
+[2024-09-12 14:31 UTC] @mike.torres: seeing a wall of 5xx on auth-service in us-east-1, anyone else?
+[2024-09-12 14:32 UTC] @sarah.kim: yeah PagerDuty just fired. p99 through the roof
+[2024-09-12 14:33 UTC] @mike.torres: looks like it started right after the v2.41.0 deploy landed. checking redis connections
+[2024-09-12 14:35 UTC] @sarah.kim: confirmed — redis-cluster-east-07 connection pool is saturated. the new Redis 7 client config has a lower default max_connections
+[2024-09-12 14:36 UTC] @mike.torres: customers are going to be hitting login failures. SSO too. declaring SEV-1
+[2024-09-12 14:37 UTC] @sarah.kim: agreed. I'll page the identity team for SSO triage
+[2024-09-12 14:40 UTC] @dave.patel (IC): I'm taking IC. What's the blast radius?
+[2024-09-12 14:42 UTC] @sarah.kim: auth-service handles all login and session validation. any customer hitting login or making authenticated API calls in us-east-1 is affected
+[2024-09-12 14:44 UTC] @dave.patel (IC): got it. so login, SSO, and any session-dependent workflows. us-east-1 only though right?
+[2024-09-12 14:45 UTC] @mike.torres: correct. eu-west-1 and ap-southeast-1 are clean
+[2024-09-12 14:48 UTC] @dave.patel (IC): options: 1) hot-patch the connection pool config 2) rollback to v2.40.3. @sarah.kim which is faster?
+[2024-09-12 14:50 UTC] @sarah.kim: rollback is safer. hot-patch is risky because we haven't tested the new pool settings under load
+[2024-09-12 14:52 UTC] @dave.patel (IC): let's go with rollback. @mike.torres can you kick it off?
+[2024-09-12 14:53 UTC] @mike.torres: on it. ETA ~10 min for rollback to propagate
+[2024-09-12 15:05 UTC] @mike.torres: rollback is deploying now
+[2024-09-12 15:42 UTC] @mike.torres: rollback to v2.40.3 complete. watching metrics
+[2024-09-12 15:48 UTC] @sarah.kim: error rate dropping fast. p99 back under 500ms. sessions recovering
+[2024-09-12 15:55 UTC] @dave.patel (IC): looks like we're recovering. going to monitor for 30 more min before closing
+[2024-09-12 16:30 UTC] @dave.patel (IC): metrics nominal for 30 min. resolving incident. root cause: Redis 7 migration changed default connection pool size, caused pool exhaustion under production load. fix: update pool config before re-deploying
