@@ -149,9 +149,9 @@ else:
 st.divider()
 st.header("AI Analysis")
 
-api_key_set = bool(os.environ.get("OPENAI_API_KEY"))
+api_key_set = bool(os.environ.get("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", None))
 if not api_key_set:
-    st.warning("Set the `OPENAI_API_KEY` environment variable to enable AI analysis.")
+    st.warning("Set the `OPENAI_API_KEY` environment variable or Streamlit secret to enable AI analysis.")
     st.stop()
 
 run_pipeline = st.button("Extract Evidence & Generate Update", type="primary", use_container_width=True)

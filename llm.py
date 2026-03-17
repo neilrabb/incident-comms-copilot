@@ -24,11 +24,21 @@ MAX_CONTEXT_CHARS = 80_000  # Stay well within context limits
 CHUNK_SIZE_CHARS = 30_000
 
 
+def _get_api_key() -> str:
+    """Resolve API key from env var or Streamlit secrets."""
+    key = os.environ.get("OPENAI_API_KEY")
+    if key:
+        return key
+    try:
+        import streamlit as st
+        return st.secrets["OPENAI_API_KEY"]
+    except Exception:
+        pass
+    raise ValueError("OPENAI_API_KEY not found in environment or Streamlit secrets.")
+
+
 def get_client() -> OpenAI:
-    api_key = os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        raise ValueError("OPENAI_API_KEY environment variable is not set.")
-    return OpenAI(api_key=api_key)
+    return OpenAI(api_key=_get_api_key())
 
 
 def _call_llm(system: str, user: str, max_tokens: int = 2000) -> str:
